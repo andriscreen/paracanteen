@@ -78,7 +78,7 @@
   include 'config/db.php';
         // Get years
         $years = [];
-        $yearRes = $conn->query("SELECT * FROM year ORDER BY year_value DESC");
+        $yearRes = $conn->query("SELECT * FROM year ORDER BY year_value ASC");
         while ($row = $yearRes->fetch_assoc()) {
           $years[] = $row;
         }
@@ -100,6 +100,12 @@
         $placeRes = $conn->query("SELECT * FROM place WHERE plant_id = $defaultPlantId ORDER BY name ASC");
         while ($row = $placeRes->fetch_assoc()) {
           $places[] = $row;
+        }
+        // Get shifts
+        $shifts = [];
+        $shiftRes = $conn->query("SELECT * FROM shift ORDER BY id ASC");
+        while ($row = $shiftRes->fetch_assoc()) {
+          $shifts[] = $row;
         }
         // Get menus for default week (week_id = 1)
         $menus = [];
@@ -145,6 +151,15 @@
                       <select class="form-select" id="placeSelect" name="place">
                           <?php foreach ($places as $place): ?>
                               <option value="<?= $place['id'] ?>"><?= $place['name'] ?></option>
+                          <?php endforeach; ?>
+                      </select>
+                  </div>
+                  <!-- Shift -->
+                  <div class="col-md-6">
+                      <label class="form-label">Shift</label>
+                      <select class="form-select" id="shiftSelect" name="shift">
+                          <?php foreach ($shifts as $shift): ?>
+                              <option value="<?= $shift['id'] ?>"><?= $shift['nama_shift'] ?></option>
                           <?php endforeach; ?>
                       </select>
                   </div>

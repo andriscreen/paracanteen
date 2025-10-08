@@ -27,3 +27,10 @@ Progress
     (untuk db order_menus menyimpan data menu yang di sumbit form food order)
     yang masih bingung menampilkan week (dropdown) lalu isinya tabel hari apa saja yang dia select (pertanyaan dalam hati "apakah ketika save order maka yang tidak terselect juga sebaiknya disimpan???")
  - Menambahkan frontend history.php (belum include db)
+
+8 Oct 2025
+- Menambahkan halaman history + fungsi tabel
+- menambahkan halaman menu + fungsi tabel (cuma untuk halaman upload gambar dan menu kantin belum di buat)
+    Bungung juga weee ... nama menu ada di tabel menu, gambar menu ada di tabel menu_image
+    Note : cari tau gimana caranya menambahkan nama + gambar di tabel yang berbeda dengan satu form sumbit (akan di taro di halaman adminmaster)
+- memperbaiki navbar untuk nama user yang sedang login

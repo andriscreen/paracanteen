@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $year_id = $_POST['year'];  // ID Year yang dipilih
     $plant_id = $_POST['plant']; // ID Plant yang dipilih
     $place_id = $_POST['place']; // ID Place yang dipilih
+    $shift_id = $_POST['shift']; // ID Shift yang dipilih
     $selected_menus = isset($_POST['menu_selected']) ? $_POST['menu_selected'] : []; // Array ID Menu yang dipilih
 
     // Mulai transaksi untuk memastikan atomisitas
@@ -28,8 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // 1. Insert data ke tabel orders, termasuk user_id
-        $stmt = $conn->prepare("INSERT INTO orders (week_id, year_id, plant_id, place_id, user_id) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("iiiii", $week_id, $year_id, $plant_id, $place_id, $user_id);
+        $stmt = $conn->prepare("INSERT INTO orders (week_id, year_id, plant_id, place_id, shift_id, user_id) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("iiiiii", $week_id, $year_id, $plant_id, $place_id, $shift_id, $user_id);
         $stmt->execute();
         
         // Ambil ID order yang baru saja disimpan

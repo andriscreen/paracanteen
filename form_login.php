@@ -60,7 +60,7 @@
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
-                <a href="index.php" class="app-brand-link gap-2">
+                <a href="index.html" class="app-brand-link gap-2">
                   <span class="app-brand-logo demo">
                     <svg
                       width="25"
@@ -177,7 +177,7 @@
 
               <p class="text-center">
                 <span>New on our platform?</span>
-                <a href="#">
+                <a href="form_register.php">
                   <span>Create an account</span>
                 </a>
               </p>
