@@ -110,64 +110,71 @@
         ?>
         <div class="card shadow-sm p-4">
           <h4 class="mb-4"><i class="bi bi-calendar-week"></i> Select Week & Year</h4>
-          <form method="post" action="">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Week</label>
-              <select class="form-select" id="weekSelect" name="week">
-                <?php foreach ($weeks as $week): ?>
-                  <option value="<?= $week['id'] ?>">Week <?= $week['week_number'] ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Year</label>
-              <select class="form-select" id="yearSelect" name="year">
-                <?php foreach ($years as $year): ?>
-                  <option value="<?= $year['id'] ?>"><?= $year['year_value'] ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Plant</label>
-              <select class="form-select" id="plantSelect" name="plant">
-                <?php foreach ($plants as $plant): ?>
-                  <option value="<?= $plant['id'] ?>"><?= $plant['name'] ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Place</label>
-              <select class="form-select" id="placeSelect" name="place">
-                <?php foreach ($places as $place): ?>
-                  <option value="<?= $place['id'] ?>"><?= $place['name'] ?></option>
-                <?php endforeach; ?>
-              </select>
-            </div>
-          </div>
-          <div class="mt-4">
-            <div id="menuCards" class="row g-3">
-              <?php foreach ($menus as $menu): ?>
-                <div class="col-md-4">
-                  <div class="card h-100 meal-card">
-                    <div class="card-body">
-                      <h5><?= $menu['day'] ?></h5>
-                      <p><?= $menu['menu_name'] ?></p>
-                      <div class="form-check mt-2">
-                        <input class="form-check-input meal-checkbox" type="checkbox" name="menu_selected[]" value="<?= $menu['id'] ?>">
-                        <label class="form-check-label">Select</label>
-                      </div>
-                    </div>
+          <form method="post" action="execution/process_order.php"> <!-- Ganti dengan halaman PHP untuk memproses order -->
+              <div class="row g-3">
+                  <!-- Week -->
+                  <div class="col-md-6">
+                      <label class="form-label">Week</label>
+                      <select class="form-select" id="weekSelect" name="week">
+                          <?php foreach ($weeks as $week): ?>
+                              <option value="<?= $week['id'] ?>">Week <?= $week['week_number'] ?></option>
+                          <?php endforeach; ?>
+                      </select>
                   </div>
-                </div>
-              <?php endforeach; ?>
-            </div>
-            <div class="d-flex justify-content-between mt-4">
-              <span id="summary"><b>0 days selected</b></span>
-              <button class="btn btn-warning" type="submit">Save Order</button>
-            </div>
-          </div>
+                  <!-- Year -->
+                  <div class="col-md-6">
+                      <label class="form-label">Year</label>
+                      <select class="form-select" id="yearSelect" name="year">
+                          <?php foreach ($years as $year): ?>
+                              <option value="<?= $year['id'] ?>"><?= $year['year_value'] ?></option>
+                          <?php endforeach; ?>
+                      </select>
+                  </div>
+                  <!-- Plant -->
+                  <div class="col-md-6">
+                      <label class="form-label">Plant</label>
+                      <select class="form-select" id="plantSelect" name="plant">
+                          <?php foreach ($plants as $plant): ?>
+                              <option value="<?= $plant['id'] ?>"><?= $plant['name'] ?></option>
+                          <?php endforeach; ?>
+                      </select>
+                  </div>
+                  <!-- Place -->
+                  <div class="col-md-6">
+                      <label class="form-label">Place</label>
+                      <select class="form-select" id="placeSelect" name="place">
+                          <?php foreach ($places as $place): ?>
+                              <option value="<?= $place['id'] ?>"><?= $place['name'] ?></option>
+                          <?php endforeach; ?>
+                      </select>
+                  </div>
+              </div>
+
+              <div class="mt-4">
+                  <div id="menuCards" class="row g-3">
+                      <?php foreach ($menus as $menu): ?>
+                          <div class="col-md-4">
+                              <div class="card h-100 meal-card">
+                                  <div class="card-body">
+                                      <h5><?= $menu['day'] ?></h5>
+                                      <p><?= $menu['menu_name'] ?></p>
+                                      <div class="form-check mt-2">
+                                          <input class="form-check-input meal-checkbox" type="checkbox" name="menu_selected[]" value="<?= $menu['id'] ?>">
+                                          <label class="form-check-label">Select</label>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      <?php endforeach; ?>
+                  </div>
+                  <div class="d-flex justify-content-between mt-4">
+                      <span id="summary"><b>0 days selected</b></span>
+                      <button id="saveOrderBtn" class="btn btn-warning" type="submit">Save Order</button>
+                  </div>
+              </div>
           </form>
+      </div>
+
 
 <style>
     /* warna biru saat dipilih */
@@ -177,6 +184,24 @@
         transition: 0.3s;
     }
 </style>
+
+<script>
+    document.getElementById("saveOrderBtn").addEventListener("click", function(event) {
+        // Menampilkan konfirmasi
+        let confirmation = confirm("Apakah Anda sudah yakin?");
+        
+        if (confirmation) {
+            // Jika yes, tampilkan pesan sukses dan kirimkan form
+            alert("Selamat, orderan Anda berhasil!");
+            document.getElementById("orderForm").submit();  // Mengirimkan form setelah konfirmasi
+        } else {
+            // Jika no, alert akan ditutup dan tidak melakukan apa-apa
+            event.preventDefault(); // Mencegah form untuk disubmit
+            return false; // Menghentikan pengiriman form
+        }
+    });
+</script>
+
 
 <script>
   // AJAX: Update menu cards when week changes

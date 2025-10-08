@@ -16,3 +16,14 @@ Progress
     - Membuat skema login tiga pihak (User, Admin, Vendor)
     - Update halaman form_login.php
 
+1 Oct 2025
+ - hapus yarn. soalnya bentrok
+ - push ke github untuk velce
+
+ 6 Oct 2025
+ - memfungsikan tombol save order di form food order
+ - menambahkan databasenya juga 
+    (untuk db order menyimpan yang di sumbit form food order)
+    (untuk db order_menus menyimpan data menu yang di sumbit form food order)
+    yang masih bingung menampilkan week (dropdown) lalu isinya tabel hari apa saja yang dia select (pertanyaan dalam hati "apakah ketika save order maka yang tidak terselect juga sebaiknya disimpan???")
+ - Menambahkan frontend history.php (belum include db)

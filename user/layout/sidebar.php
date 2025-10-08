@@ -90,7 +90,7 @@
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="history.php" class="menu-link">
                     <div data-i18n="History">History</div>
                   </a>
                 </li>
