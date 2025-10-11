@@ -107,7 +107,7 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
+                  <a href="menu.php" class="menu-link">
                     <div data-i18n="Menu1">Menu</div>
                   </a>
                 </li>

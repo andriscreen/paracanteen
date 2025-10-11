@@ -149,6 +149,9 @@ $selectSql = "SELECT
     m.`day`,
     m.menu_name AS menu_name,
     s.nama_shift AS shift_name,
+    om.makan AS makan,
+    om.kupon AS kupon,
+    om.libur AS libur,
     o.created_at
 FROM `orders` o
 JOIN `year` y ON o.year_id = y.id
@@ -159,7 +162,11 @@ JOIN `order_menus` om ON o.id = om.order_id
 JOIN `menu` m ON om.menu_id = m.id
 JOIN `shift` s ON o.shift_id = s.id
 $where
-ORDER BY o.created_at DESC
+ORDER BY 
+  DATE(o.created_at) DESC,
+  FIELD(m.`day`, 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') ASC,
+  o.created_at DESC,
+  o.id DESC
 LIMIT " . (int) $perPage . " OFFSET " . (int) $offset;
 
 $stmt = $conn->prepare($selectSql);
@@ -190,7 +197,7 @@ if (method_exists($stmt, 'get_result')) {
         $result->free();
     }
 } else {
-    if (!$stmt->bind_result($order_id, $year_value, $week_number, $plant_name, $place_name, $day, $menu_name, $shift_name, $created_at)) {
+    if (!$stmt->bind_result($order_id, $year_value, $week_number, $plant_name, $place_name, $day, $menu_name, $shift_name, $makan, $kupon, $libur, $created_at)) {
         http_response_code(500);
         exit('Database error (bind_result): ' . e($stmt->error));
     }
@@ -204,6 +211,9 @@ if (method_exists($stmt, 'get_result')) {
             'day'         => $day,
             'menu_name'   => $menu_name,
             'shift_name'  => $shift_name,
+            'makan'       => (int) $makan,
+            'kupon'       => (int) $kupon,
+            'libur'       => (int) $libur,
             'created_at'  => $created_at,
         ];
     }
@@ -312,13 +322,14 @@ $to = $total === 0 ? 0 : min($offset + $perPage, $total);
                       <th>Day</th>
                       <th>Menu</th>
                       <th>Shift</th>
+                      <th>Information</th>
                       <th>Date Ordered</th>
                     </tr>
                   </thead>
                   <tbody>
                   <?php if (count($rows) === 0): ?>
                     <tr>
-                      <td colspan="9" class="text-center">No order history found.</td>
+                      <td colspan="10" class="text-center">No order history found.</td>
                     </tr>
                   <?php else: ?>
                     <?php $no = $offset + 1; ?>
@@ -332,6 +343,15 @@ $to = $total === 0 ? 0 : min($offset + $perPage, $total);
                         <td><?= e($r['day']) ?></td>
                         <td><?= e($r['menu_name']) ?></td>
                         <td><?= e($r['shift_name']) ?></td>
+                        <td>
+                          <?php
+                            $info = [];
+                            if (isset($r['makan']) && (int)$r['makan'] === 1) $info[] = 'Makan';
+                            if (isset($r['kupon']) && (int)$r['kupon'] === 1) $info[] = 'Kupon';
+                            if (isset($r['libur']) && (int)$r['libur'] === 1) $info[] = 'Libur';
+                            echo e($info ? implode(', ', $info) : '-');
+                          ?>
+                        </td>
                         <td><?= e(!empty($r['created_at']) ? date('Y-m-d', strtotime($r['created_at'])) : '-') ?></td>
                       </tr>
                     <?php endforeach; ?>

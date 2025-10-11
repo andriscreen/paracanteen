@@ -173,9 +173,22 @@
                                   <div class="card-body">
                                       <h5><?= $menu['day'] ?></h5>
                                       <p><?= $menu['menu_name'] ?></p>
+                                      <!-- Makan -->
                                       <div class="form-check mt-2">
-                                          <input class="form-check-input meal-checkbox" type="checkbox" name="menu_selected[]" value="<?= $menu['id'] ?>">
-                                          <label class="form-check-label">Select</label>
+                                          <input class="form-check-input meal-checkbox" type="checkbox" name="menu_selected[]" value="<?= $menu['id'] ?>" id="makan_<?= $menu['id'] ?>">
+                                          <label class="form-check-label" for="makan_<?= $menu['id'] ?>">Makan</label>
+                                      </div>
+
+                                      <!-- Kupon -->
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" name="kupon[<?= $menu['id'] ?>]" value="1" id="kupon_<?= $menu['id'] ?>">
+                                          <label class="form-check-label" for="kupon_<?= $menu['id'] ?>">Kupon</label>
+                                      </div>
+
+                                      <!-- Libur -->
+                                      <div class="form-check">
+                                          <input class="form-check-input" type="checkbox" name="libur[<?= $menu['id'] ?>]" value="1" id="libur_<?= $menu['id'] ?>">
+                                          <label class="form-check-label" for="libur_<?= $menu['id'] ?>">Libur</label>
                                       </div>
                                   </div>
                               </div>
@@ -192,13 +205,103 @@
 
 
 <style>
-    /* warna biru saat dipilih */
-    .meal-card.selected {
+    /* Warna default */
+    .meal-card {
+        transition: background-color 0.3s, color 0.3s;
+        color: black;
+    }
+
+    /* Makan - biru */
+    .meal-card.makan-selected {
         background-color: #696cff; /* biru bootstrap */
         color: white;
-        transition: 0.3s;
+    }
+
+    /* Kupon - merah */
+    .meal-card.kupon-selected {
+        background-color: #dc3545; /* merah bootstrap */
+        color: white;
+    }
+
+    /* Libur - abu-abu */
+    .meal-card.libur-selected {
+        background-color: #6c757d; /* abu-abu bootstrap */
+        color: white;
     }
 </style>
+
+<script>
+document.querySelectorAll('.meal-card').forEach(card => {
+  const checkboxes = card.querySelectorAll('input[type="checkbox"]');
+  
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      if (cb.checked) {
+        // uncheck semua checkbox lain dalam card selain ini
+        checkboxes.forEach(otherCb => {
+          if (otherCb !== cb) otherCb.checked = false;
+        });
+        
+        // update warna card sesuai checkbox yang dicentang
+        updateCardColor(card);
+        updateSummary();
+      } else {
+        // kalau dicentang jadi unchecked, update warna card
+        updateCardColor(card);
+        updateSummary();
+      }
+    });
+  });
+});
+
+// Fungsi update warna card
+function updateCardColor(card) {
+  card.classList.remove('makan-selected', 'kupon-selected', 'libur-selected');
+  
+  const makanChecked = card.querySelector('input[id^="makan_"]').checked;
+  const kuponChecked = card.querySelector('input[id^="kupon_"]').checked;
+  const liburChecked = card.querySelector('input[id^="libur_"]').checked;
+  
+  if (makanChecked) {
+    card.classList.add('makan-selected');
+  } else if (kuponChecked) {
+    card.classList.add('kupon-selected');
+  } else if (liburChecked) {
+    card.classList.add('libur-selected');
+  }
+}
+
+// Inisialisasi warna saat halaman dimuat
+document.querySelectorAll('.meal-card').forEach(updateCardColor);
+</script>
+
+<script>
+document.querySelectorAll('.form-check').forEach(group => {
+  const inputs = group.querySelectorAll('input[type="checkbox"]');
+  inputs.forEach(input => {
+    input.addEventListener('change', function() {
+      if (this.checked) {
+        // Dapatkan nama group untuk satu menu, berdasarkan id input
+        // Misal: makan_3, kupon_3, libur_3 -> ambil angka 3 sebagai id menu
+        const menuId = this.id.split('_')[1];
+        
+        // Cari semua checkbox dengan menuId sama, kecuali yang ini
+        const relatedCheckboxes = document.querySelectorAll(
+          `input[type="checkbox"][id$="_${menuId}"]:not(#${this.id})`
+        );
+        
+        // Uncheck yang lain
+        relatedCheckboxes.forEach(cb => cb.checked = false);
+
+        // Update warna kartu dan summary
+        const card = this.closest('.meal-card');
+        if (card) updateCardColor(card);
+        updateSummary();
+      }
+    });
+  });
+});
+</script>
 
 <script>
     document.getElementById("saveOrderBtn").addEventListener("click", function(event) {
@@ -234,9 +337,20 @@
             <div class="card-body">
               <h5>${menu.day}</h5>
               <p>${menu.menu_name}</p>
+              <!-- Makan -->
               <div class="form-check mt-2">
-                <input class="form-check-input meal-checkbox" type="checkbox" name="menu_selected[]" value="${menu.id}">
-                <label class="form-check-label">Select</label>
+                <input class="form-check-input meal-checkbox" type="checkbox" name="menu_selected[]" value="${menu.id}" id="makan_${menu.id}">
+                <label class="form-check-label" for="makan_${menu.id}">Makan</label>
+              </div>
+              <!-- Kupon -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="kupon[${menu.id}]" value="1" id="kupon_${menu.id}">
+                <label class="form-check-label" for="kupon_${menu.id}">Kupon</label>
+              </div>
+              <!-- Libur -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="libur[${menu.id}]" value="1" id="libur_${menu.id}">
+                <label class="form-check-label" for="libur_${menu.id}">Libur</label>
               </div>
             </div>
           </div>`;
@@ -254,13 +368,48 @@
             updateSummary();
           });
         });
+
+        // Attach exclusive selection and color update for newly loaded cards
+        document.querySelectorAll('#menuCards .meal-card').forEach(card => {
+          const checkboxes = card.querySelectorAll('input[type="checkbox"]');
+          checkboxes.forEach(cb => {
+            cb.addEventListener('change', () => {
+              if (cb.checked) {
+                checkboxes.forEach(otherCb => {
+                  if (otherCb !== cb) otherCb.checked = false;
+                });
+              }
+              updateCardColor(card);
+              updateSummary();
+            });
+          });
+          // Initialize color on load
+          updateCardColor(card);
+        });
+
+        // Ensure exclusive behavior by menuId across inputs
+        document.querySelectorAll('#menuCards .form-check input[type="checkbox"]').forEach(input => {
+          input.addEventListener('change', function() {
+            if (this.checked && this.id.includes('_')) {
+              const menuId = this.id.split('_')[1];
+              document.querySelectorAll(`#menuCards input[type="checkbox"][id$="_${menuId}"]:not(#${this.id})`).forEach(cb => cb.checked = false);
+              const card = this.closest('.meal-card');
+              if (card) updateCardColor(card);
+              updateSummary();
+            }
+          });
+        });
+
         updateSummary();
       });
   });
   // Update summary saat checkbox berubah
   function updateSummary() {
-    const checked = document.querySelectorAll('.meal-checkbox:checked').length;
-    document.getElementById('summary').innerHTML = `<b>${checked} days selected</b>`;
+    let count = 0;
+    document.querySelectorAll('#menuCards .meal-card').forEach(card => {
+      if (card.querySelector('input[type="checkbox"]:checked')) count++;
+    });
+    document.getElementById('summary').innerHTML = `<b>${count} days selected</b>`;
   }
   document.querySelectorAll('.meal-checkbox').forEach(function (checkbox) {
     checkbox.addEventListener('change', function () {

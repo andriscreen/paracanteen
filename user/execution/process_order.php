@@ -22,7 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $plant_id = $_POST['plant']; // ID Plant yang dipilih
     $place_id = $_POST['place']; // ID Place yang dipilih
     $shift_id = $_POST['shift']; // ID Shift yang dipilih
-    $selected_menus = isset($_POST['menu_selected']) ? $_POST['menu_selected'] : []; // Array ID Menu yang dipilih
+    $selected_menus = isset($_POST['menu_selected']) ? array_map('intval', $_POST['menu_selected']) : []; // Array ID Menu yang dipilih
+    $kupon_menus = isset($_POST['kupon']) ? array_map('intval', array_keys($_POST['kupon'])) : [];
+    $libur_menus = isset($_POST['libur']) ? array_map('intval', array_keys($_POST['libur'])) : [];
+    // Gabungkan semua menu yang dipilih dari makan/kupon/libur agar setiap pilihan tersimpan
+    $all_menus = array_values(array_unique(array_merge($selected_menus, $kupon_menus, $libur_menus)));
 
     // Mulai transaksi untuk memastikan atomisitas
     $conn->begin_transaction();  // Menggunakan $conn, bukan $mysqli
@@ -37,13 +41,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $order_id = $conn->insert_id;
         
         // 2. Insert data ke tabel order_menus (relasi antara order dan menu)
-        if (!empty($selected_menus)) {
-            $stmt = $conn->prepare("INSERT INTO order_menus (order_id, menu_id) VALUES (?, ?)");
-        
-            foreach ($selected_menus as $menu_id) {
-                $stmt->bind_param("ii", $order_id, $menu_id);
+        if (!empty($all_menus)) {
+            $stmt = $conn->prepare("INSERT INTO order_menus (order_id, menu_id, makan, kupon, libur) VALUES (?, ?, ?, ?, ?)");
+
+            foreach ($all_menus as $menu_id) {
+                $menu_id = (int)$menu_id;
+                $makan = in_array($menu_id, $selected_menus, true) ? 1 : 0;
+                $kupon = (isset($_POST['kupon'][$menu_id]) ? 1 : 0);
+                $libur = (isset($_POST['libur'][$menu_id]) ? 1 : 0);
+
+                $stmt->bind_param("iiiii", $order_id, $menu_id, $makan, $kupon, $libur);
                 $stmt->execute();
             }
+
         }
         
         // Commit transaksi
