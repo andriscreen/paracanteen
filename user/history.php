@@ -265,7 +265,7 @@ $to = $total === 0 ? 0 : min($offset + $perPage, $total);
                   Showing <?= e($from) ?>–<?= e($to) ?> of <?= e($total) ?>
                 </div>
               </div>
-              <div class="table-responsive">
+              <div class="mb-3">
                 <form method="get" class="row g-3 mb-3">
                   <div class="col-md-3">
                     <label for="start_date" class="form-label">Start Date</label>
@@ -311,53 +311,56 @@ $to = $total === 0 ? 0 : min($offset + $perPage, $total);
                     <button type="submit" class="btn btn-primary w-100">Filter</button>
                   </div>
                 </form>
-                <table class="table table-bordered align-middle mb-3">
-                  <thead class="table-light">
-                    <tr>
-                      <th>#</th>
-                      <th>Year</th>
-                      <th>Week</th>
-                      <th>Plant</th>
-                      <th>Place</th>
-                      <th>Day</th>
-                      <th>Menu</th>
-                      <th>Shift</th>
-                      <th>Information</th>
-                      <th>Date Ordered</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  <?php if (count($rows) === 0): ?>
-                    <tr>
-                      <td colspan="10" class="text-center">No order history found.</td>
-                    </tr>
-                  <?php else: ?>
-                    <?php $no = $offset + 1; ?>
-                    <?php foreach ($rows as $r): ?>
+              </div>
+                <div class="table-responsive">
+                  <table class="table table-bordered align-middle mb-3">
+                    <thead class="table-light">
                       <tr>
-                        <td><?= e($no++) ?></td>
-                        <td><?= e($r['year_value']) ?></td>
-                        <td><?= e($r['week_number']) ?></td>
-                        <td><?= e($r['plant_name']) ?></td>
-                        <td><?= e($r['place_name']) ?></td>
-                        <td><?= e($r['day']) ?></td>
-                        <td><?= e($r['menu_name']) ?></td>
-                        <td><?= e($r['shift_name']) ?></td>
-                        <td>
-                          <?php
-                            $info = [];
-                            if (isset($r['makan']) && (int)$r['makan'] === 1) $info[] = 'Makan';
-                            if (isset($r['kupon']) && (int)$r['kupon'] === 1) $info[] = 'Kupon';
-                            if (isset($r['libur']) && (int)$r['libur'] === 1) $info[] = 'Libur';
-                            echo e($info ? implode(', ', $info) : '-');
-                          ?>
-                        </td>
-                        <td><?= e(!empty($r['created_at']) ? date('Y-m-d', strtotime($r['created_at'])) : '-') ?></td>
+                        <th>#</th>
+                        <th>Year</th>
+                        <th>Week</th>
+                        <th>Plant</th>
+                        <th>Place</th>
+                        <th>Day</th>
+                        <th>Menu</th>
+                        <th>Shift</th>
+                        <th>Information</th>
+                        <th>Date Ordered</th>
                       </tr>
-                    <?php endforeach; ?>
-                  <?php endif; ?>
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                    <?php if (count($rows) === 0): ?>
+                      <tr>
+                        <td colspan="10" class="text-center">No order history found.</td>
+                      </tr>
+                    <?php else: ?>
+                      <?php $no = $offset + 1; ?>
+                      <?php foreach ($rows as $r): ?>
+                        <tr>
+                          <td><?= e($no++) ?></td>
+                          <td><?= e($r['year_value']) ?></td>
+                          <td><?= e($r['week_number']) ?></td>
+                          <td><?= e($r['plant_name']) ?></td>
+                          <td><?= e($r['place_name']) ?></td>
+                          <td><?= e($r['day']) ?></td>
+                          <td><?= e($r['menu_name']) ?></td>
+                          <td><?= e($r['shift_name']) ?></td>
+                          <td>
+                            <?php
+                              $info = [];
+                              if (isset($r['makan']) && (int)$r['makan'] === 1) $info[] = 'Makan';
+                              if (isset($r['kupon']) && (int)$r['kupon'] === 1) $info[] = 'Kupon';
+                              if (isset($r['libur']) && (int)$r['libur'] === 1) $info[] = 'Libur';
+                              echo e($info ? implode(', ', $info) : '-');
+                            ?>
+                          </td>
+                          <td><?= e(!empty($r['created_at']) ? date('Y-m-d', strtotime($r['created_at'])) : '-') ?></td>
+                        </tr>
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="small text-muted">Page <?= e($page) ?> of <?= e($totalPages) ?></div>
