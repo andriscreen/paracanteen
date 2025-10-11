@@ -46,7 +46,8 @@
 
     <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
-    <!-- Page CSS -->
+    <!-- animate orang -->
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js" type="module"></script>
 
     <!-- Helpers -->
     <script src="../assets/vendor/js/helpers.js"></script>
@@ -77,7 +78,10 @@
             <!-- Content -->
       <div class="container mt-4">
         <div class="card shadow-sm p-4">
-          <h4 class="mb-4"><i class="bi bi-calendar-week"></i> Bebas halaman awal mau nampilin apa ...</h4>
+          <h2 class="mb-4"><i class="bi bi-person-badge-fill"></i> Hallo Paragonian!</h2>
+          <h4>Selamat datang di ParaCanteen</h4>
+            <p>platform pemesanan makanan khusus untuk karyawan Paragon. Mulailah makan makanan sehat dan bergizi!</p>
+          <dotlottie-wc src="https://lottie.host/74ccdfcf-6c18-455e-9100-1874fe6c5323/UR6jw9hUtQ.lottie" style="width: 300px;height: 300px" autoplay loop></dotlottie-wc>
           </div>
         </div>
       </div>

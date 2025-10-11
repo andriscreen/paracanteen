@@ -34,3 +34,9 @@ Progress
     Bungung juga weee ... nama menu ada di tabel menu, gambar menu ada di tabel menu_image
     Note : cari tau gimana caranya menambahkan nama + gambar di tabel yang berbeda dengan satu form sumbit (akan di taro di halaman adminmaster)
 - memperbaiki navbar untuk nama user yang sedang login
+
+11 Oct 2025
+- Menambahkan fitur edit profil
+- Memperbaharui redirect
+- Menambahkan halaman index awal user
+

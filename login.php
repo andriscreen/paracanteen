@@ -56,6 +56,7 @@ if ($result->num_rows > 0) {
     }
     exit;
 } else {
-    echo "Login gagal! Gmail atau password salah.";
+    echo "<script>alert('Login gagal! Gmail atau password salah.'); window.location.href = 'form_login.php';</script>";
+    exit;
 }
 ?>
