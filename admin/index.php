@@ -1,5 +1,6 @@
+<?php include "../auth.php"; ?>
+<?php if ($_SESSION['role'] !== 'admin') { header("Location: ../form_login.php"); exit; } ?>
 <!DOCTYPE html>
-
 <html
   lang="en"
   class="light-style layout-menu-fixed"

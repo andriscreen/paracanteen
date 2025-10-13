@@ -80,40 +80,45 @@
             <!-- Layouts -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-basket"></i>
-                <div data-i18n="Order">Order</div>
+                <i class="menu-icon bi bi-kanban"></i>
+                <div data-i18n="Management Account">Management Account</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="food-order.php" class="menu-link">
-                    <div data-i18n="Food Order">Food Order</div>
+                  <a href="manage-pic-account.php" class="menu-link">
+                    <div data-i18n="PIC Account">PIC Account</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="History">History</div>
+                  <a href="manage-vendor-account.php" class="menu-link">
+                    <div data-i18n="Vendor Account">Vendor Account</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="manage-user-account.php" class="menu-link">
+                    <div data-i18n="User Account">User Account</div>
                   </a>
                 </li>
               </ul>
             </li>
 
             <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Pages</span>
+              <span class="menu-header-text">billing page</span>
             </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Menu">Menu</div>
+                <div data-i18n="Bill">Bill</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
                   <a href="#" class="menu-link">
-                    <div data-i18n="Menu1">Menu</div>
+                    <div data-i18n="Tagihan Makan">Tagihan Makan</div>
                   </a>
                 </li>
                 <li class="menu-item">
                   <a href="#" class="menu-link">
-                    <div data-i18n="Change coupons">Change coupons</div>
+                    <div data-i18n="Tagihan Kupon">Tagihan Kupon</div>
                   </a>
                 </li>
               </ul>
@@ -125,6 +130,12 @@
               <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>
                 <div data-i18n="Basic">Notifications</div>
+              </a>
+            </li>
+            <li class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="menu-icon bi bi-menu-button"></i>
+                <div data-i18n="Basic">Menu Updates</div>
               </a>
             </li>
             <!-- Misc -->
