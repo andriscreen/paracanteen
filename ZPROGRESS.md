@@ -40,3 +40,8 @@ Progress
 - Memperbaharui redirect
 - Menambahkan halaman index awal user
 
+13 Oct 2025
+- Update halaman admin
+    - membuat manage pic account
+    - membuat manage user account
+    - membuat manage vendor account
