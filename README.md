@@ -30,7 +30,7 @@ Check out template by Sneat [Documentation](https://themeselection.com/demo/snea
 
 ## Creators 😇
 
-- [AndriScreen](https://instagram.com/xandriirawan)
+- [andriscreen](https://instagram.com/xandriirawan)
 - [ThemeSelection](https://themeselection.com)
 
 ## Browser Support 🖥️
@@ -43,15 +43,8 @@ At present, we officially aim to support the last two versions of the following 
 - Microsoft Edge (latest)
 - Opera (latest)
 
-## Useful Links 🎁
-
-- [Freebies](https://themeselection.com/products/category/download-free-admin-templates/)
-- [Download Free Admin Templates](https://themeselection.com/products/category/download-free-admin-templates/)
-- [Bootstrap 5 CheatSheet](https://bootstrap-cheatsheet.themeselection.com/)
-
 ## License ©
 
-- Copyright © [ThemeSelection](https://themeselection.com/)
 - Licensed under [MIT](https://github.com/themeselection/sneat-html-admin-template-free/blob/master/LICENSE.md)
 
 ## Contributing 🦸
