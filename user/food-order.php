@@ -197,7 +197,44 @@
                   </div>
                   <div class="d-flex justify-content-between mt-4">
                       <span id="summary"><b>0 days selected</b></span>
-                      <button id="saveOrderBtn" class="btn btn-warning" type="submit">Save Order</button>
+                      <button id="saveOrderBtn" class="btn btn-warning" type="submit" disabled>Save Order</button>
+                  </div>
+
+                  <!-- Modal Konfirmasi -->
+                  <div class="modal fade" id="confirmOrderModal" tabindex="-1" aria-labelledby="confirmOrderModalLabel" aria-hidden="false">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="confirmOrderModalLabel">Konfirmasi Order</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Apakah Anda yakin ingin menyimpan order ini?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                          <button type="button" class="btn btn-primary" id="confirmOrderBtn">Ya, Simpan</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Modal Alert -->
+                  <div class="modal fade" id="alertModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Perhatian</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <p id="alertMessage">Silakan pilih status untuk semua hari terlebih dahulu!</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
               </div>
           </form>
@@ -304,19 +341,46 @@ document.querySelectorAll('.form-check').forEach(group => {
 </script>
 
 <script>
+    // Fungsi untuk mengecek apakah semua hari sudah dicentang
+    function checkAllDaysSelected() {
+      const totalDays = document.querySelectorAll('.meal-card').length;
+      const selectedDays = document.querySelectorAll('.meal-card input[type="checkbox"]:checked').length;
+      const saveBtn = document.getElementById('saveOrderBtn');
+      
+      if (selectedDays === totalDays) {
+        saveBtn.disabled = false;
+      } else {
+        saveBtn.disabled = true;
+      }
+      return selectedDays === totalDays;
+    }
+
+    // Event listener untuk setiap perubahan checkbox
+    document.querySelectorAll('.meal-card input[type="checkbox"]').forEach(checkbox => {
+      checkbox.addEventListener('change', checkAllDaysSelected);
+    });
+
+    // Event listener untuk tombol Save Order
     document.getElementById("saveOrderBtn").addEventListener("click", function(event) {
-        // Menampilkan konfirmasi
-        let confirmation = confirm("Apakah Anda sudah yakin?");
-        
-        if (confirmation) {
-            // Jika yes, tampilkan pesan sukses dan kirimkan form
-            alert("Selamat, orderan Anda berhasil!");
-            document.getElementById("orderForm").submit();  // Mengirimkan form setelah konfirmasi
-        } else {
-            // Jika no, alert akan ditutup dan tidak melakukan apa-apa
-            event.preventDefault(); // Mencegah form untuk disubmit
-            return false; // Menghentikan pengiriman form
-        }
+      event.preventDefault();
+      
+      if (!checkAllDaysSelected()) {
+        // Tampilkan modal alert jika belum semua hari dicentang
+        new bootstrap.Modal(document.getElementById('alertModal')).show();
+        return;
+      }
+
+      // Tampilkan modal konfirmasi
+      new bootstrap.Modal(document.getElementById('confirmOrderModal')).show();
+    });
+
+    // Event listener untuk tombol konfirmasi di modal
+    document.getElementById("confirmOrderBtn").addEventListener("click", function() {
+      // Sembunyikan modal konfirmasi
+      bootstrap.Modal.getInstance(document.getElementById('confirmOrderModal')).hide();
+      
+      // Submit form
+      document.querySelector('form').submit();
     });
 </script>
 
@@ -330,6 +394,8 @@ document.querySelectorAll('.form-check').forEach(group => {
       .then(data => {
         var menuRow = document.getElementById('menuCards');
         menuRow.innerHTML = '';
+        // Reset save button state
+        document.getElementById('saveOrderBtn').disabled = true;
         data.forEach(function(menu) {
           var col = document.createElement('div');
           col.className = 'col-md-4';

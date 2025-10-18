@@ -252,6 +252,29 @@ $to = $total === 0 ? 0 : min($offset + $perPage, $total);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="../assets/vendor/js/helpers.js"></script>
     <script src="../assets/js/config.js"></script>
+    <style>
+      .pagination {
+        margin-bottom: 0;
+      }
+      .page-link {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.9rem;
+        border-radius: 0.25rem;
+        margin: 0 2px;
+      }
+      .page-link:focus {
+        box-shadow: none;
+      }
+      .pagination .bx {
+        font-size: 1.1rem;
+        line-height: 1;
+        vertical-align: middle;
+      }
+      .page-item.active .page-link {
+        background-color: #696cff;
+        border-color: #696cff;
+      }
+    </style>
   </head>
   <body>
     <div class="layout-wrapper layout-content-navbar">
@@ -364,19 +387,60 @@ $to = $total === 0 ? 0 : min($offset + $perPage, $total);
                   </table>
                 </div>
               </div>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="small text-muted">Page <?= e($page) ?> of <?= e($totalPages) ?></div>
+              <?php if ($totalPages > 1): ?>
+              <hr class="my-4">
+              <div class="d-flex justify-content-between align-items-center px-2">
+                <div class="small text-muted">
+                  Halaman <?= e($page) ?> dari <?= e($totalPages) ?>
+                </div>
                 <nav aria-label="Order history pagination">
-                  <ul class="pagination mb-0">
+                  <ul class="pagination pagination-sm mb-0">
                     <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                      <a class="page-link" href="<?= e($basePath . $qs(max(1, $page - 1))) ?>" tabindex="-1">Previous</a>
+                      <a class="page-link" href="<?= e($basePath . $qs(max(1, $page - 1))) ?>" tabindex="-1">
+                        <i class="bx bx-chevron-left"></i> Previous
+                      </a>
                     </li>
+                    <?php if ($totalPages <= 5): ?>
+                      <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?= $i === $page ? 'active' : '' ?>">
+                          <a class="page-link" href="<?= e($basePath . $qs($i)) ?>"><?= e($i) ?></a>
+                        </li>
+                      <?php endfor; ?>
+                    <?php else: ?>
+                      <?php
+                      $start = max(1, min($page - 2, $totalPages - 4));
+                      $end = min($totalPages, max($page + 2, 5));
+                      if ($start > 1): ?>
+                        <li class="page-item">
+                          <a class="page-link" href="<?= e($basePath . $qs(1)) ?>">1</a>
+                        </li>
+                        <?php if ($start > 2): ?>
+                          <li class="page-item disabled"><span class="page-link">...</span></li>
+                        <?php endif; ?>
+                      <?php endif; ?>
+                      <?php for ($i = $start; $i <= $end; $i++): ?>
+                        <li class="page-item <?= $i === $page ? 'active' : '' ?>">
+                          <a class="page-link" href="<?= e($basePath . $qs($i)) ?>"><?= e($i) ?></a>
+                        </li>
+                      <?php endfor; ?>
+                      <?php if ($end < $totalPages): ?>
+                        <?php if ($end < $totalPages - 1): ?>
+                          <li class="page-item disabled"><span class="page-link">...</span></li>
+                        <?php endif; ?>
+                        <li class="page-item">
+                          <a class="page-link" href="<?= e($basePath . $qs($totalPages)) ?>"><?= e($totalPages) ?></a>
+                        </li>
+                      <?php endif; ?>
+                    <?php endif; ?>
                     <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-                      <a class="page-link" href="<?= e($basePath . $qs(min($totalPages, $page + 1))) ?>">Next</a>
+                      <a class="page-link" href="<?= e($basePath . $qs(min($totalPages, $page + 1))) ?>">
+                        Next <i class="bx bx-chevron-right"></i>
+                      </a>
                     </li>
                   </ul>
                 </nav>
               </div>
+              <?php endif; ?>
             </div>
           </div>
         </div>

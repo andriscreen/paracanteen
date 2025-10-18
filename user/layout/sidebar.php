@@ -76,7 +76,9 @@
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
-
+            <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Pages</span>
+            </li>
             <!-- Layouts -->
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -96,24 +98,20 @@
                 </li>
               </ul>
             </li>
-
-            <li class="menu-header small text-uppercase">
-              <span class="menu-header-text">Pages</span>
-            </li>
             <li class="menu-item">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Menu">Menu</div>
+                <i class="menu-icon bi bi-ticket-perforated-fill"></i>
+                <div data-i18n="Change coupons">Change coupons</div>
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
-                  <a href="menu.php" class="menu-link">
-                    <div data-i18n="Menu1">Menu</div>
+                  <a href="redeem-kupon.php" class="menu-link">
+                    <div data-i18n="Menu1">Change coupons</div>
                   </a>
                 </li>
                 <li class="menu-item">
-                  <a href="#" class="menu-link">
-                    <div data-i18n="Change coupons">Change coupons</div>
+                  <a href="history-redeem.php" class="menu-link">
+                    <div data-i18n="History Redeem">History Redeem</div>
                   </a>
                 </li>
               </ul>
@@ -121,6 +119,12 @@
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
             <!-- Cards -->
+            <li class="menu-item">
+              <a href="menu.php" class="menu-link">
+                <i class="menu-icon bi bi-menu-button-wide-fill"></i>
+                <div data-i18n="Menu">Menu</div>
+              </a>
+            </li>
             <li class="menu-item">
               <a href="#" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-collection"></i>

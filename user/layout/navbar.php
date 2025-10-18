@@ -78,10 +78,26 @@ if (!is_file($fsPath)) {
 
               <ul class="navbar-nav flex-row align-items-center ms-auto">
                 <!-- Place this tag where you want the button to render. -->
+                <?php
+                // Ambil total kupon user
+                $total_kupon_user = 0;
+                if ($user_id > 0 && isset($conn) && $conn instanceof mysqli) {
+                    if ($stmt2 = $conn->prepare('SELECT total_kupon FROM users WHERE id = ? LIMIT 1')) {
+                        $stmt2->bind_param('i', $user_id);
+                        if ($stmt2->execute()) {
+                            $res2 = $stmt2->get_result();
+                            if ($res2 && $row2 = $res2->fetch_assoc()) {
+                                $total_kupon_user = (int)$row2['total_kupon'];
+                            }
+                        }
+                        $stmt2->close();
+                    }
+                }
+                ?>
                 <li class="nav-item lh-1 me-3">
                   <a href="#" class="btn btn-outline-primary d-flex align-items-center position-relative">
                     <i class="bi bi-ticket-perforated-fill me-1"></i> coupons
-                    <span class="badge bg-danger ms-2">10</span>
+                    <span class="badge bg-danger ms-2"><?= $total_kupon_user ?></span>
                   </a>
                 </li>
 

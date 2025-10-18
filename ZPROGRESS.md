@@ -25,14 +25,14 @@ Progress
  - menambahkan databasenya juga 
     (untuk db order menyimpan yang di sumbit form food order)
     (untuk db order_menus menyimpan data menu yang di sumbit form food order)
-    yang masih bingung menampilkan week (dropdown) lalu isinya tabel hari apa saja yang dia select (pertanyaan dalam hati "apakah ketika save order maka yang tidak terselect juga sebaiknya disimpan???")
+    yang masih bingung menampilkan week (dropdown) lalu isinya tabel hari apa saja yang dia select (pertanyaan dalam hati "apakah ketika save order maka yang tidak terselect juga sebaiknya disimpan???") DONE
  - Menambahkan frontend history.php (belum include db)
 
 8 Oct 2025
 - Menambahkan halaman history + fungsi tabel
 - menambahkan halaman menu + fungsi tabel (cuma untuk halaman upload gambar dan menu kantin belum di buat)
     Bungung juga weee ... nama menu ada di tabel menu, gambar menu ada di tabel menu_image
-    Note : cari tau gimana caranya menambahkan nama + gambar di tabel yang berbeda dengan satu form sumbit (akan di taro di halaman adminmaster)
+    Note : cari tau gimana caranya menambahkan nama + gambar di tabel yang berbeda dengan satu form sumbit (akan di taro di halaman adminmaster) DONE
 - memperbaiki navbar untuk nama user yang sedang login
 
 11 Oct 2025
@@ -45,3 +45,11 @@ Progress
     - membuat manage pic account
     - membuat manage user account
     - membuat manage vendor account
+
+18 Oct 2025
+- Update halaman user
+    - memuat page tukar sembako
+    - buat history tukar sembako
+    - fix UI tabel di history.php
+    - buat skema simulasi sebelum colok ke db
+    - fix pengurangan jumlah kupon (kepotong 2 kali mulu bangsad) note : jika di Mysql sudah inject minus maka di backend gk usah di kasih lagi tapi better kalo inject minus di jalankan di backend agar mudah di ubah dan gk ganggu stuktur db. DONE

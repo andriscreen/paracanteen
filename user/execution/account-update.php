@@ -36,9 +36,9 @@ if (isset($_FILES['upload']) && is_array($_FILES['upload']) && $_FILES['upload']
     if ($file['error'] !== UPLOAD_ERR_OK) {
         $errors[] = 'Gagal mengunggah file (kode: ' . (int)$file['error'] . ').';
     } else {
-        $maxSize = 800 * 1024; // 800 KB
+        $maxSize = 2 * 1024 * 1024; // 2 MB
         if ($file['size'] > $maxSize) {
-            $errors[] = 'Ukuran file melebihi 800KB.';
+            $errors[] = 'Ukuran file melebihi 2MB.';
         }
         // Validate MIME and extension
         $finfo = new finfo(FILEINFO_MIME_TYPE);

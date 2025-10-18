@@ -77,9 +77,9 @@
           <div class="content-wrapper">
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
-              <div class="row">
-                <div class="col-lg-12 mb-4 order-0">
-                  <div class="card">
+              <div class="row g-4">
+                <div class="col-12">
+                  <div class="card mb-4">
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-7">
                         <div class="card-body">
@@ -87,7 +87,6 @@
                           <p class="mb-4">
                             Selamat datang di <span class="fw-bold">Paracanteen</span> platform pemesanan makanan khusus untuk karyawan Paragon.
                           </p>
-
                           <a href="food-order.php" class="btn btn-sm btn-outline-primary">Food order</a>
                         </div>
                       </div>
@@ -104,66 +103,100 @@
                     </div>
                   </div>
                 </div>
-              <div class="container mt-4">
-                <div class="row">
-                  <!-- News -->
-                  <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-6">
-                    <div class="card h-100">
-                      <div class="card-header d-flex align-items-center justify-content-between pb-0">
-                        <div class="card-title mb-0">
-                          <h5 class="m-0 me-2">News</h5>
-                          <small class="text-muted">Paragon News</small>
-                        </div>
-                        <div class="dropdown">
-                          <button
-                            class="btn p-0"
-                            type="button"
-                            id="orederStatistics"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                          </div>
+                <!-- News -->
+                <div class="col-12 col-md-6">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                      <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">News</h5>
+                        <small class="text-muted">Paragon News</small>
+                      </div>
+                      <div class="dropdown">
+                        <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
                         </div>
                       </div>
-                      <!-- Isi konten nantinya taro awah sini. (slide jpg) -->
                     </div>
+                    <!-- Isi konten nantinya taro awah sini. (slide jpg) -->
                   </div>
-                  <!--/ News -->
-
-                  <!-- grafik -->
-                  <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-6">
-                    <div class="card h-100">
-                      <div class="card-header d-flex align-items-center justify-content-between pb-0">
-                        <div class="card-title mb-0">
-                          <h5 class="m-0 me-2">Grafik</h5>
-                          <small class="text-muted">Makan VS Kupon</small>
-                        </div>
-                        <div class="dropdown">
-                          <button
-                            class="btn p-0"
-                            type="button"
-                            id="orederStatistics"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- Isi konten nantinya taro awah sini. (slide jpg) -->
-                    </div>
-                  </div>
-                  <!--/ News -->
                 </div>
+                <!--/ News -->
+                <!-- Grafik -->
+                <div class="col-12 col-md-6">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                      <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">Grafik</h5>
+                        <small class="text-muted">Makan VS Kupon</small>
+                      </div>
+                      <div class="dropdown">
+                        <button class="btn p-0" type="button" id="orederStatistics" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                          <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div id="chart-makan-kupon"></div>
+                      <?php
+                      // Hitung total makan (order_menus.makan=1) dan total kupon (order_menus.kupon=1) untuk user ini
+                      $total_makan = 0;
+                      $total_kupon = 0;
+                      if (isset($conn) && $conn instanceof mysqli && isset($_SESSION['user_id'])) {
+                        $uid = (int)$_SESSION['user_id'];
+                        // Total makan
+                        $sqlMakan = "SELECT COUNT(*) AS total FROM order_menus om JOIN orders o ON om.order_id = o.id WHERE o.user_id = ? AND om.makan = 1";
+                        if ($stmt = $conn->prepare($sqlMakan)) {
+                          $stmt->bind_param('i', $uid);
+                          $stmt->execute();
+                          $res = $stmt->get_result();
+                          if ($row = $res->fetch_assoc()) $total_makan = (int)$row['total'];
+                          $stmt->close();
+                        }
+                        // Total kupon
+                        $sqlKupon = "SELECT COUNT(*) AS total FROM order_menus om JOIN orders o ON om.order_id = o.id WHERE o.user_id = ? AND om.kupon = 1";
+                        if ($stmt = $conn->prepare($sqlKupon)) {
+                          $stmt->bind_param('i', $uid);
+                          $stmt->execute();
+                          $res = $stmt->get_result();
+                          if ($row = $res->fetch_assoc()) $total_kupon = (int)$row['total'];
+                          $stmt->close();
+                        }
+                      }
+                      ?>
+                      <script>
+                      document.addEventListener('DOMContentLoaded', function() {
+                        if (window.ApexCharts) {
+                          var options = {
+                            chart: { type: 'bar', height: 250 },
+                            series: [{
+                              name: 'Total',
+                              data: [<?= $total_makan ?>, <?= $total_kupon ?>]
+                            }],
+                            xaxis: {
+                              categories: ['Makan', 'Kupon'],
+                              labels: { style: { fontSize: '14px' } }
+                            },
+                            colors: ['#00b894', '#e74c3c'],
+                            plotOptions: { bar: { borderRadius: 6, columnWidth: '40%' } },
+                            dataLabels: { enabled: true },
+                            grid: { yaxis: { lines: { show: false } } },
+                            legend: { show: false }
+                          };
+                          var chart = new ApexCharts(document.querySelector('#chart-makan-kupon'), options);
+                          chart.render();
+                        }
+                      });
+                      </script>
+                    </div>
+                  </div>
+                </div>
+                <!--/ Grafik -->
               </div>
             </div>
             <!-- / Content -->

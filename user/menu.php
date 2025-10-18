@@ -21,14 +21,15 @@ if ($selected_week > 0) {
             LEFT JOIN menu_images i 
                 ON m.week_id = i.week_id AND m.day = i.day
             WHERE m.week_id = $selected_week
-            ORDER BY m.day ASC";
+            ORDER BY FIELD(m.day, 'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu') ASC";
 } else {
     $sql = "SELECT m.*, i.image_url 
             FROM menu m 
             LEFT JOIN menu_images i 
                 ON m.week_id = i.week_id AND m.day = i.day
-            ORDER BY m.week_id ASC, m.day ASC";
+            ORDER BY m.week_id ASC, FIELD(m.day, 'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu') ASC";
 }
+
 
 $result = $conn->query($sql);
 ?>
