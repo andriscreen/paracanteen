@@ -109,7 +109,7 @@
         }
         // Get menus for default week (week_id = 1)
         $menus = [];
-        $menuRes = $conn->query("SELECT * FROM menu WHERE week_id = 1 ORDER BY FIELD(day, 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday')");
+        $menuRes = $conn->query("SELECT * FROM menu WHERE week_id = 1 ORDER BY FIELD(day, 'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu')");
         while ($row = $menuRes->fetch_assoc()) {
           $menus[] = $row;
         }

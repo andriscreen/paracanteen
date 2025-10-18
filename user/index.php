@@ -76,16 +76,98 @@
           <!-- Content wrapper -->
           <div class="content-wrapper">
             <!-- Content -->
-      <div class="container mt-4">
-        <div class="card shadow-sm p-4">
-          <h2 class="mb-4"><i class="bi bi-person-badge-fill"></i> Hallo Paragonian!</h2>
-          <h4>Selamat datang di ParaCanteen</h4>
-            <p>platform pemesanan makanan khusus untuk karyawan Paragon. Mulailah makan makanan sehat dan bergizi!</p>
-          <dotlottie-wc src="https://lottie.host/74ccdfcf-6c18-455e-9100-1874fe6c5323/UR6jw9hUtQ.lottie" style="width: 300px;height: 300px" autoplay loop></dotlottie-wc>
-          </div>
-        </div>
-      </div>
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <div class="row">
+                <div class="col-lg-12 mb-4 order-0">
+                  <div class="card">
+                    <div class="d-flex align-items-end row">
+                      <div class="col-sm-7">
+                        <div class="card-body">
+                          <h2 class="card-title text-primary">Hallo Paragonian! 🎉</h2>
+                          <p class="mb-4">
+                            Selamat datang di <span class="fw-bold">Paracanteen</span> platform pemesanan makanan khusus untuk karyawan Paragon.
+                          </p>
+
+                          <a href="food-order.php" class="btn btn-sm btn-outline-primary">Food order</a>
+                        </div>
+                      </div>
+                      <div class="col-sm-5 text-center text-sm-left">
+                        <div class="card-body pb-0 px-0 px-md-4 d-flex justify-content-center">
+                          <dotlottie-wc
+                            src="https://lottie.host/efb1eaba-1520-4a60-8f0a-d16560862400/drNKIemkWn.lottie"
+                            style="width: 170px; height: 170px;"
+                            autoplay
+                            loop
+                          ></dotlottie-wc>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <div class="container mt-4">
+                <div class="row">
+                  <!-- News -->
+                  <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-6">
+                    <div class="card h-100">
+                      <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                        <div class="card-title mb-0">
+                          <h5 class="m-0 me-2">News</h5>
+                          <small class="text-muted">Paragon News</small>
+                        </div>
+                        <div class="dropdown">
+                          <button
+                            class="btn p-0"
+                            type="button"
+                            id="orederStatistics"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                          </button>
+                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Isi konten nantinya taro awah sini. (slide jpg) -->
+                    </div>
+                  </div>
+                  <!--/ News -->
+
+                  <!-- grafik -->
+                  <div class="col-md-6 col-lg-6 col-xl-6 order-0 mb-6">
+                    <div class="card h-100">
+                      <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                        <div class="card-title mb-0">
+                          <h5 class="m-0 me-2">Grafik</h5>
+                          <small class="text-muted">Makan VS Kupon</small>
+                        </div>
+                        <div class="dropdown">
+                          <button
+                            class="btn p-0"
+                            type="button"
+                            id="orederStatistics"
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                          </button>
+                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
+                            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Isi konten nantinya taro awah sini. (slide jpg) -->
+                    </div>
+                  </div>
+                  <!--/ News -->
+                </div>
+              </div>
+            </div>
             <!-- / Content -->
+           </div>
 
             <!-- Footer -->
             <footer class="content-footer footer bg-footer-theme">

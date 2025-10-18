@@ -163,11 +163,13 @@ JOIN `menu` m ON om.menu_id = m.id
 JOIN `shift` s ON o.shift_id = s.id
 $where
 ORDER BY 
-  DATE(o.created_at) DESC,
-  FIELD(m.`day`, 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday') ASC,
-  o.created_at DESC,
-  o.id DESC
-LIMIT " . (int) $perPage . " OFFSET " . (int) $offset;
+  y.year_value DESC,
+  w.week_number DESC,
+  FIELD(m.`day`, 'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu') ASC,
+  o.created_at ASC,
+  o.id ASC
+LIMIT " . (int)$perPage . " OFFSET " . (int)$offset;
+
 
 $stmt = $conn->prepare($selectSql);
 if (!$stmt) {
