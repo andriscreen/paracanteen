@@ -12,22 +12,23 @@ include 'config/db.php';
 $selected_week = isset($_GET['week_id']) ? (int)$_GET['week_id'] : 0;
 
 // Ambil daftar week untuk dropdown filter
-$weeks_result = $conn->query("SELECT DISTINCT week_id FROM menu ORDER BY week_id ASC");
+$weeks_result = $conn->query("SELECT DISTINCT week_id 
+                             FROM menu 
+                             ORDER BY week_id ASC");
 
 // Query daftar menu + gambar
 if ($selected_week > 0) {
-    $sql = "SELECT m.*, i.image_url 
+    $sql = "SELECT m.*, mi.image_url  
             FROM menu m 
-            LEFT JOIN menu_images i 
-                ON m.week_id = i.week_id AND m.day = i.day
+            LEFT JOIN menu_images mi ON m.week_id = mi.week_id AND m.day = mi.day 
             WHERE m.week_id = $selected_week
             ORDER BY FIELD(m.day, 'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu') ASC";
 } else {
-    $sql = "SELECT m.*, i.image_url 
+    $sql = "SELECT m.*, mi.image_url 
             FROM menu m 
-            LEFT JOIN menu_images i 
-                ON m.week_id = i.week_id AND m.day = i.day
-            ORDER BY m.week_id ASC, FIELD(m.day, 'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu') ASC";
+            LEFT JOIN menu_images mi ON m.week_id = mi.week_id AND m.day = mi.day
+            ORDER BY m.week_id ASC, 
+                     FIELD(m.day, 'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu') ASC";
 }
 
 
@@ -164,7 +165,7 @@ $result = $conn->query($sql);
                         <div class="menu-card-body">
                           <h5><?= htmlspecialchars($row['menu_name']); ?></h5>
                           <p>Day: <?= $row['day']; ?></p>
-                          <p>Week: <?= $row['week_id']; ?></p>
+                          <p>Week <?= $row['week_id']; ?></p>
                         </div>
                       </div>
                     <?php endwhile; ?>

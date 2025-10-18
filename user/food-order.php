@@ -202,18 +202,55 @@
 
                   <!-- Modal Konfirmasi -->
                   <div class="modal fade" id="confirmOrderModal" tabindex="-1" aria-labelledby="confirmOrderModalLabel" aria-hidden="false">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-lg">
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title" id="confirmOrderModalLabel">Konfirmasi Order</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          Apakah Anda yakin ingin menyimpan order ini?
+                          <div class="row mb-3">
+                            <div class="col-md-6">
+                              <h6>Detail Order:</h6>
+                              <p><strong>Plant:</strong> <span id="confirmPlant"></span></p>
+                              <p><strong>Place:</strong> <span id="confirmPlace"></span></p>
+                              <p><strong>Week:</strong> <span id="confirmWeek"></span></p>
+                              <p><strong>Shift:</strong> <span id="confirmShift"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                              <h6>Ringkasan Order:</h6>
+                              <p><strong>Total Hari Makan:</strong> <span id="confirmMakan">0</span></p>
+                              <p><strong>Total Kupon:</strong> <span id="confirmKupon">0</span></p>
+                              <p><strong>Total Hari Libur:</strong> <span id="confirmLibur">0</span></p>
+                            </div>
+                          </div>
+                          <div class="table-responsive">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th>Hari</th>
+                                  <th>Menu</th>
+                                  <th>Status</th>
+                                </tr>
+                              </thead>
+                              <tbody id="confirmMenuList">
+                              </tbody>
+                            </table>
+                          </div>
+                          <div class="alert alert-warning mt-3">
+                            <i class="bx bx-info-circle me-2"></i>
+                            Pastikan data order sudah benar sebelum menyimpan.
+                          </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                          <button type="button" class="btn btn-primary" id="confirmOrderBtn">Ya, Simpan</button>
+                          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bx bx-x me-1"></i>
+                            Batal
+                          </button>
+                          <button type="button" class="btn btn-primary" id="confirmOrderBtn">
+                            <i class="bx bx-check me-1"></i>
+                            Ya, Simpan Order
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -343,16 +380,20 @@ document.querySelectorAll('.form-check').forEach(group => {
 <script>
     // Fungsi untuk mengecek apakah semua hari sudah dicentang
     function checkAllDaysSelected() {
-      const totalDays = document.querySelectorAll('.meal-card').length;
-      const selectedDays = document.querySelectorAll('.meal-card input[type="checkbox"]:checked').length;
-      const saveBtn = document.getElementById('saveOrderBtn');
+      const mealCards = document.querySelectorAll('.meal-card');
+      let allSelected = true;
       
-      if (selectedDays === totalDays) {
-        saveBtn.disabled = false;
-      } else {
-        saveBtn.disabled = true;
-      }
-      return selectedDays === totalDays;
+      mealCards.forEach(card => {
+        const hasSelection = Array.from(card.querySelectorAll('input[type="checkbox"]')).some(cb => cb.checked);
+        if (!hasSelection) {
+          allSelected = false;
+        }
+      });
+
+      const saveBtn = document.getElementById('saveOrderBtn');
+      saveBtn.disabled = !allSelected;
+      
+      return allSelected;
     }
 
     // Event listener untuk setiap perubahan checkbox
@@ -369,6 +410,52 @@ document.querySelectorAll('.form-check').forEach(group => {
         new bootstrap.Modal(document.getElementById('alertModal')).show();
         return;
       }
+
+      // Isi detail konfirmasi
+      document.getElementById('confirmPlant').textContent = document.getElementById('plantSelect').options[document.getElementById('plantSelect').selectedIndex].text;
+      document.getElementById('confirmPlace').textContent = document.getElementById('placeSelect').options[document.getElementById('placeSelect').selectedIndex].text;
+      document.getElementById('confirmWeek').textContent = 'Week ' + document.getElementById('weekSelect').options[document.getElementById('weekSelect').selectedIndex].text;
+      document.getElementById('confirmShift').textContent = document.getElementById('shiftSelect').options[document.getElementById('shiftSelect').selectedIndex].text;
+
+      // Hitung total setiap jenis
+      let totalMakan = 0;
+      let totalKupon = 0;
+      let totalLibur = 0;
+      
+      // Clear tabel menu
+      const menuList = document.getElementById('confirmMenuList');
+      menuList.innerHTML = '';
+
+      // Isi tabel menu dan hitung total
+      document.querySelectorAll('.meal-card').forEach(card => {
+        const day = card.querySelector('h5').textContent;
+        const menu = card.querySelector('p').textContent;
+        let status = '';
+
+        if (card.querySelector('input[id^="makan_"]:checked')) {
+          status = 'Makan';
+          totalMakan++;
+        } else if (card.querySelector('input[id^="kupon_"]:checked')) {
+          status = 'Kupon';
+          totalKupon++;
+        } else if (card.querySelector('input[id^="libur_"]:checked')) {
+          status = 'Libur';
+          totalLibur++;
+        }
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${day}</td>
+          <td>${menu}</td>
+          <td><span class="badge bg-${status === 'Makan' ? 'primary' : status === 'Kupon' ? 'danger' : 'secondary'}">${status}</span></td>
+        `;
+        menuList.appendChild(row);
+      });
+
+      // Update totals
+      document.getElementById('confirmMakan').textContent = totalMakan;
+      document.getElementById('confirmKupon').textContent = totalKupon;
+      document.getElementById('confirmLibur').textContent = totalLibur;
 
       // Tampilkan modal konfirmasi
       new bootstrap.Modal(document.getElementById('confirmOrderModal')).show();
@@ -422,16 +509,18 @@ document.querySelectorAll('.form-check').forEach(group => {
           </div>`;
           menuRow.appendChild(col);
         });
-        // Re-apply summary and card selection logic
-        document.querySelectorAll('.meal-checkbox').forEach(function (checkbox) {
-          checkbox.addEventListener('change', function () {
+        // Re-apply event listeners for all checkboxes
+        document.querySelectorAll('.meal-card input[type="checkbox"]').forEach(checkbox => {
+          checkbox.addEventListener('change', function() {
             const card = this.closest('.meal-card');
             if (this.checked) {
-              card.classList.add('selected');
-            } else {
-              card.classList.remove('selected');
+              // Uncheck other checkboxes in the same card
+              const otherCheckboxes = card.querySelectorAll('input[type="checkbox"]:not(#' + this.id + ')');
+              otherCheckboxes.forEach(cb => cb.checked = false);
             }
+            updateCardColor(card);
             updateSummary();
+            checkAllDaysSelected();
           });
         });
 

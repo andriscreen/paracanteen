@@ -4,6 +4,7 @@
 // Ambil data department aktif
 $query = "SELECT id, name FROM department WHERE is_active = 1 ORDER BY name ASC";
 $result = mysqli_query($conn, $query);
+// NOTE: user list will be fetched via AJAX endpoint (see config/search_users.php)
 ?>
 <!DOCTYPE html>
 <html
@@ -141,16 +142,179 @@ $result = mysqli_query($conn, $query);
 
                       <div class="mb-3">
                         <label class="form-label">Select Account</label>
-                        <select name="id" class="form-select" required>
-                          <option value="">-- Select Account --</option>
-                          <?php
-                            // tampilkan dropdown akun dari database
-                            $result = mysqli_query($conn, "SELECT id, nama, gmail FROM users ORDER BY nama ASC");
-                            while($row = mysqli_fetch_assoc($result)) {
-                              echo "<option value='{$row['id']}'>{$row['nama']} ({$row['gmail']})</option>";
+                        <!-- Searchable input + hidden id -->
+                        <div class="position-relative">
+                          <input type="text" id="userSearch" class="form-control" placeholder="Search user by name or email" aria-label="Search user">
+                          <input type="hidden" name="id" id="selectedUserId" required>
+                          <div id="userList" class="list-group position-absolute w-100" style="z-index:1050; display:none; max-height:220px; overflow:auto;"></div>
+                        </div>
+                        <small class="text-muted">Type to search and pick a user. Click an item to select.</small>
+                        <style>
+                          /* Make dropdown opaque and readable regardless of page background */
+                          #userList {
+                            z-index: 1050; /* ensure above other UI */
+                            background: #ffffff;
+                            border: 1px solid rgba(0,0,0,0.08);
+                            border-radius: 0.375rem;
+                            box-shadow: 0 0.5rem 1rem rgba(22,28,45,0.06);
+                          }
+                          #userList .list-group-item {
+                            cursor: pointer;
+                            background: transparent;
+                            color: #212529;
+                          }
+                          #userList .list-group-item:hover,
+                          #userList .list-group-item.focus {
+                            background-color: #f1f3f5;
+                            color: #212529;
+                          }
+                          #userList .list-group-item.active {
+                            background-color: #e9ecef;
+                            color: #212529;
+                          }
+                        </style>
+                        <script>
+                          (function(){
+                            const input = document.getElementById('userSearch');
+                            const list = document.getElementById('userList');
+                            const hidden = document.getElementById('selectedUserId');
+                            let currentItems = [];
+                            const CACHE_KEY = 'userSearchCache_v1';
+
+                            function loadCache() {
+                              try { return JSON.parse(localStorage.getItem(CACHE_KEY) || '{}'); } catch (e) { return {}; }
                             }
-                          ?>
-                        </select>
+                            function saveCache(c) { try { localStorage.setItem(CACHE_KEY, JSON.stringify(c)); } catch (e) {} }
+
+                            // last-selected persistence removed per request
+
+                            function debounce(fn, wait) {
+                              let t;
+                              return function() { clearTimeout(t); t = setTimeout(() => fn.apply(this, arguments), wait); };
+                            }
+
+                            async function fetchUsers(q) {
+                              if (!q || q.length < 1) { list.style.display = 'none'; return; }
+                              const cache = loadCache();
+                              if (cache[q]) {
+                                currentItems = cache[q];
+                                renderItems(currentItems);
+                                return;
+                              }
+                              try {
+                                const res = await fetch('./config/search_users.php?q=' + encodeURIComponent(q));
+                                if (!res.ok) throw new Error('Network error');
+                                const data = await res.json();
+                                currentItems = data;
+                                cache[q] = data;
+                                // keep cache small (LRU-ish): trim to last 20 keys
+                                const keys = Object.keys(cache);
+                                if (keys.length > 20) {
+                                  const drop = keys.slice(0, keys.length - 20);
+                                  drop.forEach(k => delete cache[k]);
+                                }
+                                saveCache(cache);
+                                renderItems(data);
+                              } catch (err) {
+                                console.error(err);
+                                list.style.display = 'none';
+                              }
+                            }
+
+                            function renderItems(items) {
+                              list.innerHTML = '';
+                              if (!items || !items.length) { list.style.display = 'none'; return; }
+                              items.forEach(u => {
+                                const el = document.createElement('button');
+                                el.type = 'button';
+                                el.className = 'list-group-item list-group-item-action';
+                                el.textContent = u.nama + ' (' + u.gmail + ')';
+                                el.dataset.id = u.id;
+                                el.addEventListener('click', function(){
+                                  input.value = this.textContent;
+                                  hidden.value = this.dataset.id;
+                                  // do not persist last-selected
+                                  list.style.display = 'none';
+                                });
+                                list.appendChild(el);
+                              });
+                              list.style.display = 'block';
+                            }
+
+                            // no prefill of last-selected per request
+
+                            input.addEventListener('input', debounce(function(){
+                              hidden.value = '';
+                              fetchUsers(this.value.trim());
+                            }, 250));
+
+                            // hide on outside click
+                            document.addEventListener('click', function(e){
+                              if (!document.getElementById('userSearch').contains(e.target) && !document.getElementById('userList').contains(e.target)) {
+                                list.style.display = 'none';
+                              }
+                            });
+
+                            // keyboard navigation
+                            input.addEventListener('keydown', function(e){
+                              const items = Array.from(list.querySelectorAll('.list-group-item'));
+                              if (!items.length) return;
+                              const active = list.querySelector('.list-group-item.focus');
+                              let idx = items.indexOf(active);
+                              if (e.key === 'ArrowDown') {
+                                e.preventDefault();
+                                idx = Math.min(items.length - 1, idx + 1);
+                                if (active) active.classList.remove('focus');
+                                items[idx].classList.add('focus');
+                                items[idx].scrollIntoView({block:'nearest'});
+                              } else if (e.key === 'ArrowUp') {
+                                e.preventDefault();
+                                idx = Math.max(0, idx - 1);
+                                if (active) active.classList.remove('focus');
+                                items[idx].classList.add('focus');
+                                items[idx].scrollIntoView({block:'nearest'});
+                              } else if (e.key === 'Enter') {
+                                e.preventDefault();
+                                const target = list.querySelector('.list-group-item.focus') || items[0];
+                                if (target) { target.click(); }
+                              }
+                            });
+
+                            // Remove a user from the cached results and last-selected
+                            function removeUserFromCacheById(id) {
+                              if (!id) return;
+                              try {
+                                const cache = loadCache();
+                                let changed = false;
+                                Object.keys(cache).forEach(k => {
+                                  const arr = cache[k] || [];
+                                  const filtered = arr.filter(u => String(u.id) !== String(id));
+                                  if (filtered.length !== arr.length) {
+                                    cache[k] = filtered;
+                                    changed = true;
+                                  }
+                                });
+                                if (changed) saveCache(cache);
+                                // do not manage last-selected key
+                              } catch (e) {
+                                console.error('cache remove error', e);
+                              }
+                            }
+
+                            // Hook delete form submit to purge cache for selected user
+                            try {
+                              const deleteForm = document.querySelector('form[action="execution/user_action.php"][method="POST"]');
+                              if (deleteForm) {
+                                deleteForm.addEventListener('submit', function(){
+                                  const id = hidden.value;
+                                  if (id) removeUserFromCacheById(id);
+                                });
+                              }
+                            } catch (e) {
+                              console.error(e);
+                            }
+                          })();
+                        </script>
                       </div>
 
                       <button type="submit" class="btn btn-danger">Delete Account</button>

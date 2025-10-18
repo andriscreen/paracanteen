@@ -1,16 +1,8 @@
 <?php
 session_start();
 
-// Koneksi ke database
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "paragonapp";
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+// Koneksi ke MySQL
+include_once __DIR__ . '/db_master.php';  // Path relatif ke db_master.php
 
 // Ambil input dari form
 $nama     = trim($_POST['nama']);

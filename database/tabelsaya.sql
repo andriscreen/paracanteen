@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2025 at 04:30 AM
+-- Generation Time: Oct 18, 2025 at 06:34 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -70,6 +70,53 @@ INSERT INTO `department` (`id`, `name`, `is_active`) VALUES
 (8, 'Sales', 1),
 (9, 'Operations', 1),
 (10, 'Procurement', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kupon_history`
+--
+
+CREATE TABLE `kupon_history` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `jumlah_kupon` int(11) NOT NULL,
+  `tanggal_dapat` timestamp NOT NULL DEFAULT current_timestamp(),
+  `keterangan` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `kupon_history`
+--
+
+INSERT INTO `kupon_history` (`id`, `user_id`, `order_id`, `jumlah_kupon`, `tanggal_dapat`, `keterangan`) VALUES
+(1, 10, 29, 1, '2025-10-18 02:43:20', 'Kupon dari pemesanan makanan'),
+(2, 10, 29, 1, '2025-10-18 02:43:20', 'Kupon dari pemesanan makanan'),
+(3, 10, 29, 1, '2025-10-18 02:43:20', 'Kupon dari pemesanan makanan'),
+(4, 10, 29, 1, '2025-10-18 02:43:20', 'Kupon dari pemesanan makanan'),
+(5, 10, 29, 1, '2025-10-18 02:43:20', 'Kupon dari pemesanan makanan'),
+(6, 10, 30, 1, '2025-10-18 02:58:04', 'Kupon dari pemesanan makanan'),
+(7, 10, 30, 1, '2025-10-18 02:58:04', 'Kupon dari pemesanan makanan'),
+(8, 10, 30, 1, '2025-10-18 02:58:04', 'Kupon dari pemesanan makanan'),
+(9, 10, 30, 1, '2025-10-18 02:58:04', 'Kupon dari pemesanan makanan'),
+(10, 10, 30, 1, '2025-10-18 02:58:04', 'Kupon dari pemesanan makanan'),
+(11, 10, 30, 1, '2025-10-18 02:58:04', 'Kupon dari pemesanan makanan'),
+(12, 10, 30, 1, '2025-10-18 02:58:04', 'Kupon dari pemesanan makanan'),
+(13, 10, 31, 1, '2025-10-18 03:07:05', 'Kupon dari pemesanan makanan'),
+(14, 10, 31, 1, '2025-10-18 03:07:05', 'Kupon dari pemesanan makanan'),
+(15, 10, 31, 1, '2025-10-18 03:07:05', 'Kupon dari pemesanan makanan'),
+(16, 10, 31, 1, '2025-10-18 03:07:05', 'Kupon dari pemesanan makanan'),
+(17, 10, 31, 1, '2025-10-18 03:07:05', 'Kupon dari pemesanan makanan'),
+(18, 10, 31, 1, '2025-10-18 03:07:05', 'Kupon dari pemesanan makanan'),
+(19, 10, 31, 1, '2025-10-18 03:07:05', 'Kupon dari pemesanan makanan'),
+(20, 10, 33, 1, '2025-10-18 03:52:02', 'Kupon dari pemesanan makanan'),
+(21, 10, 34, 1, '2025-10-18 04:02:24', 'Kupon dari pemesanan makanan'),
+(22, 10, 34, 1, '2025-10-18 04:02:24', 'Kupon dari pemesanan makanan'),
+(23, 10, 34, 1, '2025-10-18 04:02:24', 'Kupon dari pemesanan makanan'),
+(24, 10, 34, 1, '2025-10-18 04:02:24', 'Kupon dari pemesanan makanan'),
+(25, 10, 34, 1, '2025-10-18 04:02:24', 'Kupon dari pemesanan makanan'),
+(26, 10, 35, 1, '2025-10-18 04:07:06', 'Kupon dari pemesanan makanan');
 
 -- --------------------------------------------------------
 
@@ -193,7 +240,14 @@ INSERT INTO `orders` (`id`, `week_id`, `year_id`, `plant_id`, `place_id`, `shift
 (25, 1, 1, 1, 1, 2, '2025-10-11 05:29:20', 7),
 (26, 2, 1, 2, 2, 2, '2025-10-13 15:16:03', 1),
 (27, 2, 1, 1, 1, 1, '2025-10-17 23:46:27', 1),
-(28, 1, 1, 1, 1, 1, '2025-10-18 00:06:55', 1);
+(28, 1, 1, 1, 1, 1, '2025-10-18 00:06:55', 1),
+(29, 1, 1, 1, 1, 1, '2025-10-18 02:43:20', 10),
+(30, 2, 1, 1, 1, 1, '2025-10-18 02:58:04', 10),
+(31, 1, 1, 2, 2, 2, '2025-10-18 03:07:05', 10),
+(32, 5, 1, 1, 1, 1, '2025-10-18 03:51:34', 10),
+(33, 2, 1, 6, 7, 1, '2025-10-18 03:52:02', 10),
+(34, 1, 1, 1, 1, 1, '2025-10-18 04:02:24', 10),
+(35, 1, 1, 1, 1, 1, '2025-10-18 04:07:06', 10);
 
 -- --------------------------------------------------------
 
@@ -308,7 +362,76 @@ INSERT INTO `order_menus` (`id`, `order_id`, `menu_id`, `makan`, `kupon`, `libur
 (94, 28, 4, 0, 1, 0),
 (95, 28, 5, 0, 1, 0),
 (96, 28, 6, 0, 1, 0),
-(97, 28, 7, 0, 1, 0);
+(97, 28, 7, 0, 1, 0),
+(98, 29, 6, 1, 0, 0),
+(99, 29, 1, 0, 1, 0),
+(100, 29, 2, 0, 1, 0),
+(101, 29, 3, 0, 1, 0),
+(102, 29, 4, 0, 1, 0),
+(103, 29, 5, 0, 1, 0),
+(104, 29, 7, 0, 0, 1),
+(105, 30, 8, 0, 1, 0),
+(106, 30, 9, 0, 1, 0),
+(107, 30, 10, 0, 1, 0),
+(108, 30, 11, 0, 1, 0),
+(109, 30, 12, 0, 1, 0),
+(110, 30, 13, 0, 1, 0),
+(111, 30, 14, 0, 1, 0),
+(112, 31, 1, 0, 1, 0),
+(113, 31, 2, 0, 1, 0),
+(114, 31, 3, 0, 1, 0),
+(115, 31, 4, 0, 1, 0),
+(116, 31, 5, 0, 1, 0),
+(117, 31, 6, 0, 1, 0),
+(118, 31, 7, 0, 1, 0),
+(119, 33, 8, 1, 0, 0),
+(120, 33, 9, 1, 0, 0),
+(121, 33, 10, 1, 0, 0),
+(122, 33, 11, 1, 0, 0),
+(123, 33, 12, 1, 0, 0),
+(124, 33, 13, 0, 1, 0),
+(125, 33, 14, 0, 0, 1),
+(126, 34, 1, 0, 1, 0),
+(127, 34, 2, 0, 1, 0),
+(128, 34, 3, 0, 1, 0),
+(129, 34, 4, 0, 1, 0),
+(130, 34, 5, 0, 1, 0),
+(131, 34, 6, 0, 0, 1),
+(132, 34, 7, 0, 0, 1),
+(133, 35, 1, 1, 0, 0),
+(134, 35, 2, 1, 0, 0),
+(135, 35, 4, 1, 0, 0),
+(136, 35, 5, 1, 0, 0),
+(137, 35, 6, 1, 0, 0),
+(138, 35, 3, 0, 1, 0),
+(139, 35, 7, 0, 0, 1);
+
+--
+-- Triggers `order_menus`
+--
+DELIMITER $$
+CREATE TRIGGER `after_order_menu_insert` AFTER INSERT ON `order_menus` FOR EACH ROW BEGIN
+    DECLARE v_user_id INT UNSIGNED;
+    
+    -- Ambil user_id dari tabel orders
+    SELECT user_id INTO v_user_id 
+    FROM orders 
+    WHERE id = NEW.order_id;
+    
+    -- Jika kolom kupon = 1, tambahkan ke kupon_history
+    IF NEW.kupon = 1 THEN
+        -- Tambahkan record ke kupon_history
+        INSERT INTO kupon_history (user_id, order_id, jumlah_kupon, keterangan)
+        VALUES (v_user_id, NEW.order_id, 1, 'Kupon dari pemesanan makanan');
+        
+        -- Update total_kupon di tabel users
+        UPDATE users 
+        SET total_kupon = total_kupon + 1 
+        WHERE id = v_user_id;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -409,6 +532,34 @@ INSERT INTO `redeem_items` (`id`, `nama`, `kupon`, `gambar`, `keterangan`, `akti
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `redemption_history`
+--
+
+CREATE TABLE `redemption_history` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) UNSIGNED NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `kupon_used` int(11) NOT NULL,
+  `item_name` varchar(100) NOT NULL,
+  `redemption_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` enum('pending','completed','cancelled') DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `redemption_history`
+--
+
+INSERT INTO `redemption_history` (`id`, `user_id`, `item_id`, `quantity`, `kupon_used`, `item_name`, `redemption_date`, `status`) VALUES
+(1, 10, 3, 2, 4, 'Gula', '2025-10-18 02:56:29', 'pending'),
+(2, 10, 2, 1, 3, 'Minyak Goreng', '2025-10-18 02:58:42', 'pending'),
+(3, 10, 2, 1, 3, 'Minyak Goreng', '2025-10-18 03:07:20', 'pending'),
+(4, 10, 3, 1, 2, 'Gula', '2025-10-18 03:56:22', 'pending'),
+(5, 10, 5, 1, 1, 'Teh Celup', '2025-10-18 03:56:22', 'pending');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `shift`
 --
 
@@ -454,7 +605,8 @@ INSERT INTO `users` (`id`, `nama`, `nip`, `gmail`, `password`, `created_at`, `av
 (3, 'naruto', '', 'naruto@gmail.com', '1463ccd2104eeb36769180b8a0c86bb6', '2025-10-08 15:21:18', NULL, NULL, 0),
 (4, 'haki', '', 'haki2@gg.com', '1463ccd2104eeb36769180b8a0c86bb6', '2025-10-08 15:21:43', NULL, NULL, 0),
 (6, 'amanda indah rahayu ningsih', '', 'amanda@gmail.com', '6209804952225ab3d14348307b5a4a27', '2025-10-10 16:46:59', NULL, NULL, 0),
-(7, 'mamang eeng', '25454511', 'mamang@gmail.com', '3bd3feb3f927d7c1dace62e7997bcd94', '2025-10-11 03:49:21', 'assets/img/avatars/avatar_u7_20251011063559.png', 'Operations', 0);
+(7, 'mamang eeng', '25454511', 'mamang@gmail.com', '3bd3feb3f927d7c1dace62e7997bcd94', '2025-10-11 03:49:21', 'assets/img/avatars/avatar_u7_20251011063559.png', 'Operations', 0),
+(10, 'manda', '', 'manda@gmail.com', '86cc266e1c70ed60524b9f23c79e3a28', '2025-10-18 02:42:36', NULL, NULL, 6);
 
 -- --------------------------------------------------------
 
@@ -588,6 +740,14 @@ ALTER TABLE `department`
   ADD UNIQUE KEY `name` (`name`);
 
 --
+-- Indexes for table `kupon_history`
+--
+ALTER TABLE `kupon_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
 -- Indexes for table `menu`
 --
 ALTER TABLE `menu`
@@ -654,6 +814,14 @@ ALTER TABLE `redeem_items`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `redemption_history`
+--
+ALTER TABLE `redemption_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `item_id` (`item_id`);
+
+--
 -- Indexes for table `shift`
 --
 ALTER TABLE `shift`
@@ -703,6 +871,12 @@ ALTER TABLE `department`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT for table `kupon_history`
+--
+ALTER TABLE `kupon_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
@@ -724,13 +898,13 @@ ALTER TABLE `nama_vendor`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `order_menus`
 --
 ALTER TABLE `order_menus`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=98;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `pic_kantin`
@@ -757,6 +931,12 @@ ALTER TABLE `redeem_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `redemption_history`
+--
+ALTER TABLE `redemption_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `shift`
 --
 ALTER TABLE `shift`
@@ -766,7 +946,7 @@ ALTER TABLE `shift`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `vendorkantin`
@@ -789,6 +969,13 @@ ALTER TABLE `year`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `kupon_history`
+--
+ALTER TABLE `kupon_history`
+  ADD CONSTRAINT `kupon_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `kupon_history_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `menu`
@@ -818,6 +1005,13 @@ ALTER TABLE `order_menus`
 --
 ALTER TABLE `place`
   ADD CONSTRAINT `place_ibfk_1` FOREIGN KEY (`plant_id`) REFERENCES `plant` (`id`);
+
+--
+-- Constraints for table `redemption_history`
+--
+ALTER TABLE `redemption_history`
+  ADD CONSTRAINT `redemption_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `redemption_history_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `redeem_items` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `week`

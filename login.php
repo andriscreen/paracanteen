@@ -2,15 +2,9 @@
 session_start();
 
 // Koneksi ke MySQL
-$host = "localhost";
-$user = "root";       // sesuaikan
-$pass = "";           // sesuaikan
-$db   = "paragonapp";  // sesuaikan nama database
+include_once __DIR__ . '/db_master.php';  // Path relatif ke db_master.php
 
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+
 
 // Ambil data dari form login
 $gmail    = $_POST['gmail'];

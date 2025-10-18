@@ -53,3 +53,5 @@ Progress
     - fix UI tabel di history.php
     - buat skema simulasi sebelum colok ke db
     - fix pengurangan jumlah kupon (kepotong 2 kali mulu bangsad) note : jika di Mysql sudah inject minus maka di backend gk usah di kasih lagi tapi better kalo inject minus di jalankan di backend agar mudah di ubah dan gk ganggu stuktur db. DONE
+    - membuat menu update data + action
+    
