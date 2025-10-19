@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $week_id = mysqli_real_escape_string($conn, $_POST['week_id']);
         $day = mysqli_real_escape_string($conn, $_POST['day']);
         $menu_name = mysqli_real_escape_string($conn, $_POST['menu_name']);
+        $keterangan = mysqli_real_escape_string($conn, $_POST['keterangan']); // Ambil keterangan dari input form
 
         // Start transaction
         mysqli_begin_transaction($conn);
@@ -33,9 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mysqli_stmt_close($stmt);
 
             // Insert new menu
-            $query = "INSERT INTO menu (week_id, day, menu_name) VALUES (?, ?, ?)";
+            $query = "INSERT INTO menu (week_id, day, menu_name, keterangan) VALUES (?, ?, ?, ?)";
             $stmt = mysqli_prepare($conn, $query);
-            mysqli_stmt_bind_param($stmt, "iss", $week_id, $day, $menu_name);
+            mysqli_stmt_bind_param($stmt, "isss", $week_id, $day, $menu_name, $keterangan); // Bind keterangan
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
 

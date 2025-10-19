@@ -83,9 +83,11 @@
                     <div class="d-flex align-items-end row">
                       <div class="col-sm-7">
                         <div class="card-body">
-                          <h2 class="card-title text-primary">Hallo Paragonian! 🎉</h2>
+                          <h2 class="card-title text-primary fw-bold">Hallo Paragonian! 🎉</h2>
                           <p class="mb-4">
-                            Selamat datang di <span class="fw-bold">Paracanteen</span> platform pemesanan makanan khusus untuk karyawan Paragon.
+                            "Tubuh kita adalah amanah dari <strong>Allah.SWT</strong>. Maka, makanlah yang baik dan bergizi agar tubuh kita tetap kuat untuk beribadah, bekerja, dan berkontribusi untuk kebaikan."
+
+                            <strong><span style="font-style: italic;">"Wa la tulkhu bi-aydikum ila tahlukah" (QS. Al-Baqarah: 195)</span></strong>
                           </p>
                           <a href="food-order.php" class="btn btn-sm btn-outline-primary">Food order</a>
                         </div>

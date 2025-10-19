@@ -125,6 +125,11 @@ $result = mysqli_query($conn, $query);
                         <label class="form-label">Menu Name</label>
                         <input type="text" name="menu_name" class="form-control" placeholder="Enter menu name" required>
                       </div>
+                      <div class="mb-3">
+                        <label class="form-label">Keterangan</label>
+                        <input type="text" name="keterangan" class="form-control" placeholder="Enter keterangan" required>
+                      </div>
+                      
 
                       <div class="mb-3">
                         <label class="form-label">Menu Image</label>

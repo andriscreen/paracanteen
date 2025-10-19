@@ -86,6 +86,11 @@
               </a>
               <ul class="menu-sub">
                 <li class="menu-item">
+                  <a href="update-menu.php" class="menu-link">
+                    <div data-i18n="Vendor Name">Update Menu</div>
+                  </a>
+                </li>
+                <li class="menu-item">
                   <a href="update-user.php" class="menu-link">
                     <div data-i18n="Vendor Name">Update User</div>
                   </a>
@@ -112,6 +117,33 @@
                 </li>
               </ul>
             </li>
+            <!-- / Check update data -->
+            <li class="menu-header small text-uppercase">
+              <span class="menu-header-text">Check Again</span>
+            </li>
+            <li class="menu-item">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon bi bi-folder-plus"></i>
+                <div data-i18n="Bill">Check Update Data</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item">
+                  <a href="check-update-user.php" class="menu-link">
+                    <div data-i18n="Vendor Name">Check Update User</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="check-update-menu.php" class="menu-link">
+                    <div data-i18n="Vendor Name">Check Update Menu</div>
+                  </a>
+                </li>
+                <li class="menu-item">
+                  <a href="check-update-data.php" class="menu-link">
+                    <div data-i18n="Vendor Name">Check Update Data</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
             
             <!-- Components -->
             <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
@@ -123,9 +155,9 @@
               </a>
             </li>
             <li class="menu-item">
-              <a href="update-menu.php" class="menu-link">
+              <a href="manage-user-order.php" class="menu-link">
                 <i class="menu-icon bi bi-menu-button"></i>
-                <div data-i18n="Basic">Menu Updates</div>
+                <div data-i18n="Basic">Control User Order</div>
               </a>
             </li>
             <!-- Misc -->
