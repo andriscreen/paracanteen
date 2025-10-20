@@ -31,7 +31,6 @@ if ($selected_week > 0) {
                      FIELD(m.day, 'Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu') ASC";
 }
 
-
 $result = $conn->query($sql);
 ?>
 
@@ -92,6 +91,7 @@ $result = $conn->query($sql);
         background: #fff;
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         transition: 0.3s;
+        cursor: pointer;
       }
       .menu-card:hover {
         transform: translateY(-5px);
@@ -117,6 +117,65 @@ $result = $conn->query($sql);
       .filter-form {
         max-width: 250px;
         margin-bottom: 20px;
+      }
+      .detail-btn {
+        margin-top: 8px;
+        padding: 5px 12px;
+        background: #696cff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: background 0.3s;
+      }
+      .detail-btn:hover {
+        background: #5a5fe3;
+      }
+      
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+      }
+      .modal-content {
+        background-color: #fff;
+        margin: 5% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      }
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      .close:hover {
+        color: #000;
+      }
+      .modal-header {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      }
+      .modal-body {
+        padding: 10px 0;
+      }
+      .keterangan-content {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 10px;
       }
     </style>
   </head>
@@ -159,13 +218,16 @@ $result = $conn->query($sql);
                 <div class="menu-container">
                   <?php if ($result->num_rows > 0): ?>
                     <?php while($row = $result->fetch_assoc()): ?>
-                      <div class="menu-card">
+                      <div class="menu-card" onclick="showMenuDetail(<?= htmlspecialchars(json_encode($row)); ?>)">
                         <img src="<?= $row['image_url'] ? '../' . $row['image_url'] : '../assets/img/menu/no-image.jpg'; ?>" 
                           alt="<?= htmlspecialchars($row['menu_name']); ?>">
                         <div class="menu-card-body">
                           <h5><?= htmlspecialchars($row['menu_name']); ?></h5>
                           <p>Day: <?= $row['day']; ?></p>
                           <p>Week <?= $row['week_id']; ?></p>
+                          <button class="detail-btn" onclick="event.stopPropagation(); showMenuDetail(<?= htmlspecialchars(json_encode($row)); ?>)">
+                            <i class="bx bx-info-circle"></i> Detail
+                          </button>
                         </div>
                       </div>
                     <?php endwhile; ?>
@@ -201,6 +263,21 @@ $result = $conn->query($sql);
     </div>
     <!-- / Layout wrapper -->
 
+    <!-- Modal untuk Detail Menu -->
+    <div id="menuModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h4 id="modalTitle">Detail Menu</h4>
+        </div>
+        <div class="modal-body">
+          <div id="modalContent">
+            <!-- Konten detail akan dimuat di sini -->
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Core JS -->
     <script src="../assets/vendor/libs/jquery/jquery.js"></script>
     <script src="../assets/vendor/libs/popper/popper.js"></script>
@@ -213,6 +290,72 @@ $result = $conn->query($sql);
 
     <!-- Main JS -->
     <script src="../assets/js/main.js"></script>
+
+    <script>
+      // Fungsi untuk menampilkan detail menu
+      function showMenuDetail(menuData) {
+        const modal = document.getElementById('menuModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        
+        // Set judul modal
+        modalTitle.textContent = menuData.menu_name;
+        
+        // Buat konten detail
+        let content = `
+          <div class="row">
+            <div class="col-md-4">
+              <img src="${menuData.image_url ? '../' + menuData.image_url : '../assets/img/menu/no-image.jpg'}" 
+                   alt="${menuData.menu_name}" 
+                   style="width: 100%; height: 150px; object-fit: cover; border-radius: 5px;">
+            </div>
+            <div class="col-md-8">
+              <p><strong>Hari:</strong> ${menuData.day}</p>
+              <p><strong>Week:</strong> ${menuData.week_id}</p>
+            </div>
+          </div>
+        `;
+        
+        // Tambahkan keterangan jika ada
+        if (menuData.keterangan && menuData.keterangan.trim() !== '') {
+          content += `
+            <div class="keterangan-content">
+              <h6><strong>Keterangan Menu:</strong></h6>
+              <p>${menuData.keterangan}</p>
+            </div>
+          `;
+        } else {
+          content += `
+            <div class="keterangan-content">
+              <p class="text-muted"><em>Tidak ada keterangan tambahan untuk menu ini.</em></p>
+            </div>
+          `;
+        }
+        
+        modalContent.innerHTML = content;
+        modal.style.display = 'block';
+      }
+      
+      // Fungsi untuk menutup modal
+      function closeModal() {
+        document.getElementById('menuModal').style.display = 'none';
+      }
+      
+      // Tutup modal ketika klik di luar konten modal
+      window.onclick = function(event) {
+        const modal = document.getElementById('menuModal');
+        if (event.target == modal) {
+          closeModal();
+        }
+      }
+      
+      // Tutup modal dengan tombol ESC
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeModal();
+        }
+      });
+    </script>
   </body>
 </html>
 

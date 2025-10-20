@@ -13,6 +13,9 @@ if (isset($_SESSION['role'])) {
         case 'admin':
             header("Location: admin/");
             exit;
+        case 'pickantin':
+            header("Location: pickantin/");
+            exit;    
     }
 }
 ?>

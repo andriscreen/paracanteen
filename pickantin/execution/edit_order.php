@@ -2,7 +2,7 @@
 include "../config/db.php";
 include "../../auth.php";
 
-if ($_SESSION['role'] !== 'admin') {
+if ($_SESSION['role'] !== 'pickantin') {
     header("Location: ../../form_login.php");
     exit;
 }
